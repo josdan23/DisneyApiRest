@@ -1,10 +1,12 @@
 package com.jdyapura.api.disney.services;
 
+import com.github.javafaker.Faker;
 import com.jdyapura.api.disney.models.Genre;
 import com.jdyapura.api.disney.repositories.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +46,19 @@ public class GenreService {
             return;
         
         repository.deleteById(idGenre);
+    }
+
+    @PostConstruct
+    private void insertFakeDataInDB(){
+        Faker faker = new Faker();
+
+        for (int i = 0; i < 5; i++) {
+            repository.save(new Genre(
+                    faker.book().genre(),
+                    "no image"
+            ));
+        }
+
     }
 
 }

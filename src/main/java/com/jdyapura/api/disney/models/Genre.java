@@ -18,6 +18,9 @@ public class Genre {
     @Column(name = "image")
     private String image;
 
+    public Genre() {
+    }
+
     public Genre(String name, String image) {
         this.name = name;
         this.image = image;
