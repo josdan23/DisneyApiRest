@@ -29,6 +29,10 @@ public class Movie {
     @ManyToOne
     private Genre genre;
 
+    public Movie() {
+
+    }
+
     public Movie(String title, Date creationDate, int qualifiers, String image, Genre genre) {
         this.title = title;
         this.creationDate = creationDate;
