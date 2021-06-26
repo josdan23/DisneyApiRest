@@ -2,6 +2,7 @@ package com.jdyapura.api.disney.models;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -17,7 +18,7 @@ public class Movie {
 
     @Column(name = "creation_date")
     @Temporal(TemporalType.DATE)
-    private LocalDate creationDate;
+    private Date creationDate;
 
     @Column(name = "qualifiers")
     private int qualifiers;
@@ -28,7 +29,7 @@ public class Movie {
     @ManyToOne
     private Genre genre;
 
-    public Movie(String title, LocalDate creationDate, int qualifiers, String image, Genre genre) {
+    public Movie(String title, Date creationDate, int qualifiers, String image, Genre genre) {
         this.title = title;
         this.creationDate = creationDate;
         this.qualifiers = qualifiers;
@@ -52,11 +53,11 @@ public class Movie {
         this.title = title;
     }
 
-    public LocalDate getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
