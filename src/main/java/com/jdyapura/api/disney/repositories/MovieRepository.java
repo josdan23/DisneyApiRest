@@ -1,9 +1,9 @@
 package com.jdyapura.api.disney.repositories;
 
 import com.jdyapura.api.disney.models.Movie;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MovieRepository extends CrudRepository<Movie, Integer> {
+public interface MovieRepository extends JpaRepository<Movie, Integer> {
 }
