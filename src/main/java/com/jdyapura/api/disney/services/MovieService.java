@@ -1,6 +1,9 @@
 package com.jdyapura.api.disney.services;
 
+import com.github.javafaker.Faker;
+import com.jdyapura.api.disney.models.Genre;
 import com.jdyapura.api.disney.models.Movie;
+import com.jdyapura.api.disney.repositories.GenreRepository;
 import com.jdyapura.api.disney.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,14 +15,17 @@ import java.util.Optional;
 public class MovieService {
 
     @Autowired
-    private MovieRepository repository;
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private GenreRepository genreRepository;
 
     public List<Movie> findAllMovies() {
-        return repository.findAll();
+        return movieRepository.findAll();
     }
 
     public Movie findMovieById(int idMovie) {
-        Optional<Movie> result = repository.findById(idMovie);
+        Optional<Movie> result = movieRepository.findById(idMovie);
         if (!result.isPresent())
             return null;
         return result.get();
@@ -27,7 +33,10 @@ public class MovieService {
 
     public Movie saveMovie(Movie newMovie) {
         //TODO: validar si no existe
-        return repository.save(newMovie);
+
+        Genre savedGenre = genreRepository.save(newMovie.getGenre());
+        newMovie.setGenre(savedGenre);
+        return movieRepository.save(newMovie);
     }
 
     public Movie updateMovie(int idMovie, Movie updatedMovie) {
@@ -35,13 +44,13 @@ public class MovieService {
         if(savedMovie == null)
             return null;
 
-        return repository.save(savedMovie);
+        return movieRepository.save(savedMovie);
     }
 
     public void deleteMovie(int idMovie) {
-        if (!repository.existsById(idMovie))
+        if (!movieRepository.existsById(idMovie))
             return;
 
-        repository.deleteById(idMovie);
+        movieRepository.deleteById(idMovie);
     }
 }
