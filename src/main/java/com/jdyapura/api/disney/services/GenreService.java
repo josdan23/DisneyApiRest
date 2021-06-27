@@ -47,18 +47,5 @@ public class GenreService {
         
         repository.deleteById(idGenre);
     }
-
-    @PostConstruct
-    private void insertFakeDataInDB(){
-        Faker faker = new Faker();
-
-        for (int i = 0; i < 5; i++) {
-            repository.save(new Genre(
-                    faker.book().genre(),
-                    "no image"
-            ));
-        }
-
-    }
-
+    
 }
