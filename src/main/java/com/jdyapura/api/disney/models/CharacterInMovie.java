@@ -19,6 +19,10 @@ public class CharacterInMovie {
     @JoinColumn(name = "charecter_id")
     private Character character;
 
+    public CharacterInMovie(){
+
+    }
+
     public CharacterInMovie(Movie movie, Character character) {
         this.movie = movie;
         this.character = character;

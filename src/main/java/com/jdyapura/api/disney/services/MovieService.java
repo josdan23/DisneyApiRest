@@ -1,13 +1,17 @@
 package com.jdyapura.api.disney.services;
 
-import com.github.javafaker.Faker;
+import com.jdyapura.api.disney.models.Character;
+import com.jdyapura.api.disney.models.CharacterInMovie;
 import com.jdyapura.api.disney.models.Genre;
 import com.jdyapura.api.disney.models.Movie;
+import com.jdyapura.api.disney.repositories.CharacterInMovieRepository;
+import com.jdyapura.api.disney.repositories.CharacterRepository;
 import com.jdyapura.api.disney.repositories.GenreRepository;
 import com.jdyapura.api.disney.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +23,9 @@ public class MovieService {
 
     @Autowired
     private GenreRepository genreRepository;
+
+    @Autowired
+    private CharacterInMovieRepository characterInMovieRepository;
 
     public List<Movie> findAllMovies() {
         return movieRepository.findAll();
@@ -32,14 +39,20 @@ public class MovieService {
     }
 
     public Movie saveMovie(Movie newMovie) {
-        //TODO: validar si no existe
 
-        Genre savedGenre = genreRepository.save(newMovie.getGenre());
+        Genre savedGenre = genreRepository.findByName(newMovie.getGenre().getName());
+        if (savedGenre == null)
+            return null;
         newMovie.setGenre(savedGenre);
         return movieRepository.save(newMovie);
     }
 
     public Movie updateMovie(int idMovie, Movie updatedMovie) {
+
+        Genre savedGenre = genreRepository.findByName(updatedMovie.getGenre().getName());
+        if (savedGenre == null)
+            return null;
+
         Movie savedMovie = findMovieById(idMovie);
         if(savedMovie == null)
             return null;
@@ -52,5 +65,19 @@ public class MovieService {
             return;
 
         movieRepository.deleteById(idMovie);
+    }
+
+    public List<Character> findCharactersInMovieByIdMovie(int idMovie) {
+        Movie movie = movieRepository.getById(idMovie);
+
+        List<CharacterInMovie> characterInMovieList = characterInMovieRepository.findByMovie(movie);
+
+        List<Character> characterList = new ArrayList<>();
+
+        characterInMovieList.forEach( c -> {
+            characterList.add(c.getCharacter());
+        });
+
+        return characterList;
     }
 }

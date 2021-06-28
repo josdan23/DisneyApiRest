@@ -27,6 +27,12 @@ public class GenreService {
         return result.get();
     }
 
+    public Genre findGenreByName(String genreName) {
+        Genre genre = repository.findByName(genreName);
+        System.out.println(genre);
+        return genre;
+    }
+
     public Genre saveGenre(Genre newGenre) {
         return repository.save(newGenre);
     }

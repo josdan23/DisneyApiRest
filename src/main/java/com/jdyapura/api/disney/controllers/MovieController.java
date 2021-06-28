@@ -1,16 +1,17 @@
 package com.jdyapura.api.disney.controllers;
 
+import com.jdyapura.api.disney.controllers.responsedto.MovieDetailResponse;
+import com.jdyapura.api.disney.controllers.responsedto.MovieResponse;
+import com.jdyapura.api.disney.models.Character;
 import com.jdyapura.api.disney.models.Movie;
 import com.jdyapura.api.disney.services.MovieService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,13 +23,51 @@ public class MovieController {
     private MovieService service;
 
     @GetMapping
-    public ResponseEntity<Iterable<Movie>> getAllMovies() {
+    public ResponseEntity<List<MovieResponse>> getAllMovies() {
 
-        return new ResponseEntity(service.findAllMovies(), HttpStatus.OK);
+        List<MovieResponse> response = new ArrayList<>();
+        service.findAllMovies().forEach( m -> {
+            MovieResponse movieResponse = new MovieResponse();
+            movieResponse.title = m.getTitle();
+            movieResponse.image = m.getImage();
+            movieResponse.creationDate =  m.getCreationDate().toString();
+            response.add(movieResponse);
+        });
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> getMovieById(@PathVariable("id") int idMovie) {
-        return new ResponseEntity<>(service.findMovieById(idMovie), HttpStatus.OK);
+    public ResponseEntity<MovieDetailResponse> getMovieById(@PathVariable("id") int idMovie) {
+
+        Movie savedMovie = service.findMovieById(idMovie);
+        List<Character> characterInMovieList = service.findCharactersInMovieByIdMovie(idMovie);
+
+        MovieDetailResponse response = new MovieDetailResponse();
+        response.id = savedMovie.getIdMovie();
+        response.title = savedMovie.getTitle();
+        response.creationDate = savedMovie.getCreationDate().toString();
+        response.qualifiers = savedMovie.getQualifiers();
+        response.image = savedMovie.getImage();
+        response.genre = savedMovie.getGenre().getName();
+
+        characterInMovieList.forEach( character -> {
+            response.characters.add(character.getName());
+        });
+
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Movie> postMovie(@RequestBody Movie movie) {
+        return new ResponseEntity<>(service.saveMovie(movie), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMovie(@PathVariable("id") int idMovie) {
+
+        service.deleteMovie(idMovie);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
