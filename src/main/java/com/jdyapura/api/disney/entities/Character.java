@@ -86,4 +86,15 @@ public class Character {
         this.image = image;
     }
 
+    @Override
+    public String toString() {
+        return "Character{" +
+                "idCharacter=" + idCharacter +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", weight=" + weight +
+                ", history='" + history + '\'' +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

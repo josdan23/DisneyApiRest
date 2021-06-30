@@ -98,4 +98,17 @@ public class Movie {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "idMovie=" + idMovie +
+                ", title='" + title + '\'' +
+                ", creationDate=" + creationDate +
+                ", calification=" + calification +
+                ", image='" + image + '\'' +
+                ", type='" + type + '\'' +
+                ", genre=" + genre +
+                '}';
+    }
 }

@@ -48,4 +48,13 @@ public class Genre {
     public void setImage(String image) {
         this.image = image;
     }
+
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "idGenre=" + idGenre +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }
