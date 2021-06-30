@@ -1,11 +1,10 @@
 package com.jdyapura.api.disney.controllers;
 
-import com.jdyapura.api.disney.models.Genre;
+import com.jdyapura.api.disney.entities.Genre;
 import com.jdyapura.api.disney.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

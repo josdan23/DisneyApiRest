@@ -1,9 +1,9 @@
 package com.jdyapura.api.disney;
 
 import com.github.javafaker.Faker;
-import com.jdyapura.api.disney.models.Character;
-import com.jdyapura.api.disney.models.Genre;
-import com.jdyapura.api.disney.models.Movie;
+import com.jdyapura.api.disney.entities.Character;
+import com.jdyapura.api.disney.entities.Genre;
+import com.jdyapura.api.disney.entities.Movie;
 import com.jdyapura.api.disney.repositories.GenreRepository;
 import com.jdyapura.api.disney.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class FakerService {
 
         List<Movie> fakeListMovies = new ArrayList<>();
 
-        for (int i = 0; i < 100; i++) {
+        /*for (int i = 0; i < 100; i++) {
             Movie movie = new Movie(
                     faker.book().title(),
                     faker.date().birthday(),
@@ -65,7 +65,7 @@ public class FakerService {
                     listSavedGenres.get(randon.nextInt(listSavedGenres.size()-1))
             );
             fakeListMovies.add(movie);
-        }
+        }*/
 
         return fakeListMovies;
     }

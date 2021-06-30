@@ -1,14 +1,14 @@
-package com.jdyapura.api.disney.models;
+package com.jdyapura.api.disney.entities;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "charecter_in_movie")
-public class CharacterInMovie {
+@Table(name = "charecter_movie")
+public class CharacterMovie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_character_in_movie")
+    @Column(name = "id_character_movie")
     private Integer id;
 
     @ManyToOne
@@ -19,11 +19,11 @@ public class CharacterInMovie {
     @JoinColumn(name = "charecter_id")
     private Character character;
 
-    public CharacterInMovie(){
+    public CharacterMovie(){
 
     }
 
-    public CharacterInMovie(Movie movie, Character character) {
+    public CharacterMovie(Movie movie, Character character) {
         this.movie = movie;
         this.character = character;
     }

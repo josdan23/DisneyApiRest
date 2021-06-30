@@ -1,9 +1,7 @@
-package com.jdyapura.api.disney.models;
+package com.jdyapura.api.disney.entities;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Table(name = "movie")
@@ -20,11 +18,14 @@ public class Movie {
     @Temporal(TemporalType.DATE)
     private Date creationDate;
 
-    @Column(name = "qualifiers")
-    private int qualifiers;
+    @Column(name = "calification")
+    private int calification;
 
     @Column(name = "image")
     private String image;
+
+    @Column(name = "type")
+    private String type;
 
     @ManyToOne
     private Genre genre;
@@ -33,11 +34,12 @@ public class Movie {
 
     }
 
-    public Movie(String title, Date creationDate, int qualifiers, String image, Genre genre) {
+    public Movie(String title, Date creationDate, int calification, String image, String type, Genre genre) {
         this.title = title;
         this.creationDate = creationDate;
-        this.qualifiers = qualifiers;
+        this.calification = calification;
         this.image = image;
+        this.type = type;
         this.genre = genre;
     }
 
@@ -65,12 +67,12 @@ public class Movie {
         this.creationDate = creationDate;
     }
 
-    public int getQualifiers() {
-        return qualifiers;
+    public int getCalification() {
+        return calification;
     }
 
-    public void setQualifiers(int qualifiers) {
-        this.qualifiers = qualifiers;
+    public void setCalification(int calification) {
+        this.calification = calification;
     }
 
     public String getImage() {
@@ -87,5 +89,13 @@ public class Movie {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

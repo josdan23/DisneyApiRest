@@ -1,6 +1,6 @@
 package com.jdyapura.api.disney.repositories;
 
-import com.jdyapura.api.disney.models.Genre;
+import com.jdyapura.api.disney.entities.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

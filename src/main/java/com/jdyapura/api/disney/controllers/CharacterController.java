@@ -2,8 +2,8 @@ package com.jdyapura.api.disney.controllers;
 
 import com.jdyapura.api.disney.controllers.responsedto.CharacterDetailResponse;
 import com.jdyapura.api.disney.controllers.responsedto.CharacterResponse;
-import com.jdyapura.api.disney.models.Character;
-import com.jdyapura.api.disney.models.Movie;
+import com.jdyapura.api.disney.entities.Character;
+import com.jdyapura.api.disney.entities.Movie;
 import com.jdyapura.api.disney.services.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

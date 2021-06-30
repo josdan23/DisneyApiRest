@@ -1,16 +1,16 @@
 package com.jdyapura.api.disney.repositories;
 
-import com.jdyapura.api.disney.models.Character;
-import com.jdyapura.api.disney.models.CharacterInMovie;
-import com.jdyapura.api.disney.models.Movie;
+import com.jdyapura.api.disney.entities.Character;
+import com.jdyapura.api.disney.entities.CharacterMovie;
+import com.jdyapura.api.disney.entities.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CharacterInMovieRepository extends JpaRepository<CharacterInMovie, Integer> {
+public interface CharacterInMovieRepository extends JpaRepository<CharacterMovie, Integer> {
 
 
-    List<CharacterInMovie> findByCharacter(Character character);
+    List<CharacterMovie> findByCharacter(Character character);
 
-    List<CharacterInMovie> findByMovie(Movie movie);
+    List<CharacterMovie> findByMovie(Movie movie);
 }

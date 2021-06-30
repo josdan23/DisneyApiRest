@@ -1,8 +1,6 @@
-package com.jdyapura.api.disney.models;
+package com.jdyapura.api.disney.entities;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name="character")

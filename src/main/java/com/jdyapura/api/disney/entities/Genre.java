@@ -1,7 +1,6 @@
-package com.jdyapura.api.disney.models;
+package com.jdyapura.api.disney.entities;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "genre")

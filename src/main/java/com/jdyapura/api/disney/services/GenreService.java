@@ -1,12 +1,10 @@
 package com.jdyapura.api.disney.services;
 
-import com.github.javafaker.Faker;
-import com.jdyapura.api.disney.models.Genre;
+import com.jdyapura.api.disney.entities.Genre;
 import com.jdyapura.api.disney.repositories.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
