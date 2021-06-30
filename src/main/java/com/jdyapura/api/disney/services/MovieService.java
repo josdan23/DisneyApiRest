@@ -4,7 +4,7 @@ import com.jdyapura.api.disney.entities.Character;
 import com.jdyapura.api.disney.entities.CharacterMovie;
 import com.jdyapura.api.disney.entities.Genre;
 import com.jdyapura.api.disney.entities.Movie;
-import com.jdyapura.api.disney.repositories.CharacterInMovieRepository;
+import com.jdyapura.api.disney.repositories.CharacterMovieRepository;
 import com.jdyapura.api.disney.repositories.GenreRepository;
 import com.jdyapura.api.disney.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class MovieService {
     private GenreRepository genreRepository;
 
     @Autowired
-    private CharacterInMovieRepository characterInMovieRepository;
+    private CharacterMovieRepository characterMovieRepository;
 
     public List<Movie> findAllMovies() {
         return movieRepository.findAll();
@@ -69,7 +69,7 @@ public class MovieService {
     public List<Character> findCharactersInMovieByIdMovie(int idMovie) {
         Movie movie = movieRepository.getById(idMovie);
 
-        List<CharacterMovie> characterMovieList = characterInMovieRepository.findByMovie(movie);
+        List<CharacterMovie> characterMovieList = characterMovieRepository.findByMovie(movie);
 
         List<Character> characterList = new ArrayList<>();
 
