@@ -18,17 +18,32 @@ public class GenreController {
 
     @GetMapping
     public ResponseEntity<List<Genre>> getAllGenres() {
-        return new ResponseEntity<>(service.findAllGenres(), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(service.findAllGenres(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Genre> getGenre(@PathVariable("id") int idGenre){
-        return new ResponseEntity<>(service.findGenreById(idGenre), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(service.findGenreById(idGenre), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @PostMapping
     public ResponseEntity<Genre> postGenre(@RequestBody Genre newGenre) {
-        return new ResponseEntity<>(service.saveGenre(newGenre), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(service.saveGenre(newGenre), HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @PutMapping("/{id}")

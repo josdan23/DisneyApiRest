@@ -46,7 +46,7 @@ public class MovieController {
         response.id = savedMovie.getIdMovie();
         response.title = savedMovie.getTitle();
         response.creationDate = savedMovie.getCreationDate().toString();
-        response.qualifiers = savedMovie.getQualifiers();
+        response.qualifiers = savedMovie.getCalification();
         response.image = savedMovie.getImage();
         response.genre = savedMovie.getGenre().getName();
 
