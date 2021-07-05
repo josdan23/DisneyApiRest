@@ -1,5 +1,6 @@
 package com.jdyapura.api.disney.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jdyapura.api.disney.entities.Genre;
 import com.jdyapura.api.disney.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/genres")
 public class GenreController {
 
-    private final String PATH_IMAGES = ".//src//main//resources//files//";
+    private final String PATH_IMAGES = "./src/main/resources/files/";
 
     @Autowired
     private GenreService service;
@@ -45,24 +45,29 @@ public class GenreController {
     }
 
     @PostMapping
-    public ResponseEntity<?> postGenre(@RequestBody Genre newGenre, @RequestParam MultipartFile imageFile) {
+    public ResponseEntity<Object> postGenre(
+            @RequestParam String jsondata,
+            @RequestParam MultipartFile imageFile) {
 
-        if (imageFile.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seleccionar archivo");
-        }
+       try {
 
-        try {
-            byte[] bytes = imageFile.getBytes();
-            Path path = Paths.get(PATH_IMAGES + imageFile.getOriginalFilename());
-            Files.write(path, bytes);
+            ObjectMapper mapper = new ObjectMapper();
 
-            newGenre.setImage(path.toString());
+            Genre newGenre = mapper.readValue(jsondata, Genre.class);
 
-            return new ResponseEntity<>(service.saveGenre(newGenre), HttpStatus.CREATED);
+            if (!imageFile.isEmpty()) {
+                byte[] bytes = imageFile.getBytes();
+                Path path = Paths.get(PATH_IMAGES + imageFile.getOriginalFilename());
+                Files.write(path, bytes);
+                newGenre.setImage(path.toString());
 
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } catch (Exception e) {
+            } else {
+                newGenre.setImage("no image");
+            }
+
+            return new ResponseEntity<>(service.saveGenre(newGenre), HttpStatus.OK);
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
