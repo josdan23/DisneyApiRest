@@ -92,21 +92,22 @@ public class GenreService {
         return genreSaved;
     }
 
-    public Genre updateGenre(int idGenre, Genre updatedGenre) {
+    public Genre updateGenre(int idGenre, Genre newGenreUpdate) {
 
-        Genre savedGenre = null;
+        Genre oldGenre = null;
 
         try {
-            savedGenre = findGenreById(idGenre);
+            oldGenre = findGenreById(idGenre);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(savedGenre == null)
+        if(oldGenre == null)
             return null;
 
-        savedGenre.setName(updatedGenre.getName());
-        savedGenre.setImage(updatedGenre.getImage());
-        return repository.save(savedGenre);
+        //savedGenre.setName(updatedGenre.getName());
+        if (newGenreUpdate.getImage() != null)
+            oldGenre.setImage(newGenreUpdate.getImage());
+        return repository.save(oldGenre);
     }
 
     public void deleteGenre(int idGenre) throws RuntimeException {
