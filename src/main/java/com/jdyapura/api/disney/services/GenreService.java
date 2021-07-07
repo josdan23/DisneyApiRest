@@ -104,7 +104,7 @@ public class GenreService {
         if(oldGenre == null)
             return null;
 
-        //savedGenre.setName(updatedGenre.getName());
+        oldGenre.setName(newGenreUpdate.getName());
         if (newGenreUpdate.getImage() != null)
             oldGenre.setImage(newGenreUpdate.getImage());
         return repository.save(oldGenre);
