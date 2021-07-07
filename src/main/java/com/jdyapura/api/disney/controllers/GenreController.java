@@ -1,5 +1,6 @@
 package com.jdyapura.api.disney.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jdyapura.api.disney.entities.Genre;
 import com.jdyapura.api.disney.services.GenreService;
@@ -21,27 +22,28 @@ public class GenreController {
 
     private final String PATH_IMAGES = "./src/main/resources/files/";
 
+    private final ObjectMapper mapper = new ObjectMapper();
+
+
     @Autowired
     private GenreService service;
 
     @GetMapping
-    public ResponseEntity<List<Genre>> getAllGenres() {
+    public ResponseEntity<?> getAllGenres() {
         try {
             return new ResponseEntity<>(service.findAllGenres(), HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            return new ResponseEntity<>("No content", HttpStatus.NO_CONTENT);
         }
-        return null;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Genre> getGenre(@PathVariable("id") int idGenre){
+    public ResponseEntity<?> getGenre(@PathVariable("id") int idGenre){
         try {
             return new ResponseEntity<>(service.findGenreById(idGenre), HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            return new ResponseEntity<>("no content", HttpStatus.NO_CONTENT);
         }
-        return null;
     }
 
     @PostMapping
@@ -50,8 +52,6 @@ public class GenreController {
             @RequestParam MultipartFile imageFile) {
 
        try {
-
-            ObjectMapper mapper = new ObjectMapper();
 
             Genre newGenre = mapper.readValue(jsondata, Genre.class);
 
@@ -68,15 +68,35 @@ public class GenreController {
             return new ResponseEntity<>(service.saveGenre(newGenre), HttpStatus.OK);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
-
-        return null;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Genre> updateGenre(@PathVariable("id") int idGenre, @RequestBody Genre updatedGenre) {
-        return new ResponseEntity<>(service.updateGenre(idGenre, updatedGenre), HttpStatus.OK);
+    public ResponseEntity<?> updateGenre(
+            @PathVariable("id") int idGenre,
+            @RequestParam String jsondata,
+            @RequestParam(required = false) MultipartFile imageFile) {
+
+        try {
+            Genre genreToUpdate = mapper.readValue(jsondata, Genre.class);
+
+            if ( imageFile != null && !imageFile.isEmpty()) {
+                byte[] bytes = imageFile.getBytes();
+                Path path = Paths.get(PATH_IMAGES + imageFile.getOriginalFilename());
+                Files.write(path, bytes);
+                genreToUpdate.setImage(path.toString());
+            }
+
+            return new ResponseEntity<>(service.updateGenre(idGenre, genreToUpdate), HttpStatus.OK);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @DeleteMapping("/{id}")
