@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/genres")
 public class GenreController {
 
-    private final String PATH_IMAGES = "./src/main/resources/files/";
+    private final String PATH_IMAGES = "./src/main/resources/static/";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -49,13 +49,14 @@ public class GenreController {
     @PostMapping
     public ResponseEntity<Object> postGenre(
             @RequestParam String jsondata,
-            @RequestParam MultipartFile imageFile) {
+            @RequestParam(required = false) MultipartFile imageFile) {
 
        try {
 
             Genre newGenre = mapper.readValue(jsondata, Genre.class);
 
-            if (!imageFile.isEmpty()) {
+            if (imageFile != null && !imageFile.isEmpty()) {
+
                 byte[] bytes = imageFile.getBytes();
                 Path path = Paths.get(PATH_IMAGES + imageFile.getOriginalFilename());
                 Files.write(path, bytes);
