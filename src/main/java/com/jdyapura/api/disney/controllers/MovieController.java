@@ -22,14 +22,15 @@ public class MovieController {
     private MovieService service;
 
     @GetMapping
-    public ResponseEntity<List<MovieResponse>> getAllMovies() {
+    public ResponseEntity<?> getAllMovies(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "genre", required = false) Integer idGenre,
+            @RequestParam(value = "order", required = false ) String order) {
 
         List<MovieResponse> response = new ArrayList<>();
+
         service.findAllMovies().forEach( m -> {
-            MovieResponse movieResponse = new MovieResponse();
-            movieResponse.title = m.getTitle();
-            movieResponse.image = m.getImage();
-            movieResponse.creationDate =  m.getCreationDate().toString();
+            MovieResponse movieResponse = new MovieResponse(m);
             response.add(movieResponse);
         });
 
@@ -42,16 +43,10 @@ public class MovieController {
         Movie savedMovie = service.findMovieById(idMovie);
         List<Character> characterInMovieList = service.findCharactersInMovieByIdMovie(idMovie);
 
-        MovieDetailResponse response = new MovieDetailResponse();
-        response.id = savedMovie.getIdMovie();
-        response.title = savedMovie.getTitle();
-        response.creationDate = savedMovie.getCreationDate().toString();
-        response.qualifiers = savedMovie.getCalification();
-        response.image = savedMovie.getImage();
-        response.genre = savedMovie.getGenre().getName();
+        MovieDetailResponse response = new MovieDetailResponse(savedMovie);
 
         characterInMovieList.forEach( character -> {
-            response.characters.add(character.getName());
+            response.getCharacters().add(character.getName());
         });
 
 
