@@ -12,6 +12,7 @@ public class MovieDetailResponse {
     private int calification;
     private String image;
     private String genre;
+    private String type;
     private List<String> characters = new ArrayList<>();
 
     public MovieDetailResponse(Movie movie) {
@@ -21,6 +22,7 @@ public class MovieDetailResponse {
         this.calification = movie.getCalification();
         this.image = movie.getImage();
         this.genre = movie.getGenre().getName();
+        this.type = movie.getType().toUpperCase();
     }
 
     public Integer getId() {
@@ -69,6 +71,14 @@ public class MovieDetailResponse {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public List<String> getCharacters() {

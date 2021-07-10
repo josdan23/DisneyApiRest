@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.Date;
+import java.util.List;
 
 @SpringBootApplication
 public class DisneyApplication {
@@ -31,6 +32,21 @@ public class DisneyApplication {
 			finally {
 				continue;
 			}
+		}
+
+		List<Genre> listGenre = genreService.findAllGenres();
+
+		for (int i = 0; i < 10; i++ ) {
+
+			int randomIndex = (int) (Math.random() * listGenre.size());
+
+			movieService.saveMovie(new Movie(
+					faker.book().title(),
+					new Date(),
+					3,
+					"no image",
+					"movie",
+					genreService.findGenreById(listGenre.get(randomIndex).getIdGenre())));
 		}
 	}
 
