@@ -15,8 +15,8 @@ public class Movie {
     private String title;
 
     @Column(name = "creation_date")
-    @Temporal(TemporalType.DATE)
-    private Date creationDate;
+    //@Temporal(TemporalType.DATE)
+    private String creationDate;
 
     @Column(name = "calification")
     private int calification;
@@ -34,7 +34,7 @@ public class Movie {
 
     }
 
-    public Movie(String title, Date creationDate, int calification, String image, String type, Genre genre) {
+    public Movie(String title, String creationDate, int calification, String image, String type, Genre genre) {
         this.title = title;
         this.creationDate = creationDate;
         this.calification = calification;
@@ -59,11 +59,11 @@ public class Movie {
         this.title = title;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
-    }
+    }   
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
