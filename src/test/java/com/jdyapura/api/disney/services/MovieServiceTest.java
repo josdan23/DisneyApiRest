@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,14 +50,14 @@ class MovieServiceTest {
     @Test
     public void es_verdader_si_el_tamaño_de_la_lista_de_movies_de_retorno_es_mayor_a_cero() {
 
-        Date today = new Date();
+        String date = LocalDate.now().toString();
         Genre exampleGenre = new Genre("Action", "imageGenre");
 
 
         List<Movie> movieList = new ArrayList<>();
         movieList.add(
                 new Movie("Cars",
-                        new Date(),
+                        date,
                         2,
                         "image",
                         "movie",
@@ -64,7 +65,7 @@ class MovieServiceTest {
 
         movieList.add(
                 new Movie("Dinos",
-                        new Date(),
+                        date,
                         3,
                         "image",
                         "movie",
@@ -138,7 +139,7 @@ class MovieServiceTest {
         Movie movieToSave = new Movie();
         movieToSave.setTitle("Cars");
         movieToSave.setCalification(2);
-        movieToSave.setCreationDate(new Date());
+        movieToSave.setCreationDate(LocalDate.now().toString());
         movieToSave.setImage("imagen");
         movieToSave.setType("Movie");
         movieToSave.setGenre(genre);
