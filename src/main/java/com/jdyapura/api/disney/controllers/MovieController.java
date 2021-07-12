@@ -42,6 +42,12 @@ public class MovieController {
             @RequestParam(value = "genre", required = false) Integer idGenre,
             @RequestParam(value = "order", required = false ) String order) {
 
+        if (name != null)
+            return new ResponseEntity<>(service.findMovieByName(name), HttpStatus.OK);
+
+        if (idGenre != null)
+            return new ResponseEntity<>(service.findMovieByGenre(idGenre), HttpStatus.OK);
+
         List<MovieResponse> response = new ArrayList<>();
 
         service.findAllMovies().forEach( m -> {

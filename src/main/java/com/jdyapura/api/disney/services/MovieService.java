@@ -150,12 +150,9 @@ public class MovieService {
         return movieRepository.findByTitle(title);
     }
 
-  /*  public List<Movie> findMoviesByIdGenre(Integer idGenre) {
+    public List<Movie> findMovieByGenre(Integer idGenre) {
 
         return movieRepository.findMoviesByIdGenre(idGenre);
     }
 
-    public List<Movie> findAllMoviesOrder() {
-        return null;
-    }*/
 }
