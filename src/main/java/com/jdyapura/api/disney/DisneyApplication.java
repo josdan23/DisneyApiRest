@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class DisneyApplication {
 
 			movieService.saveMovie(new Movie(
 					faker.book().title(),
-					new Date(),
+					LocalDate.now().toString(),
 					3,
 					"no image",
 					"movie",
