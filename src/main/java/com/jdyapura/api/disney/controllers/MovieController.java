@@ -42,18 +42,25 @@ public class MovieController {
             @RequestParam(value = "genre", required = false) Integer idGenre,
             @RequestParam(value = "order", required = false ) String order) {
 
-        if (name != null)
-            return new ResponseEntity<>(service.findMovieByName(name), HttpStatus.OK);
-
-        if (idGenre != null)
-            return new ResponseEntity<>(service.findMovieByGenre(idGenre), HttpStatus.OK);
-
         List<MovieResponse> response = new ArrayList<>();
 
-        service.findAllMovies().forEach( m -> {
-            MovieResponse movieResponse = new MovieResponse(m);
-            response.add(movieResponse);
-        });
+        if (name != null){
+            System.out.println(name);
+            Movie searchedMovie = service.findMovieByName(name);
+            response.add(new MovieResponse(searchedMovie));
+        }
+
+        if (idGenre != null) {
+            service.findMovieByGenre(idGenre).forEach(m -> {
+                response.add(new MovieResponse(m));
+            });
+        }
+
+        if (name == null && idGenre == null ){
+            service.findAllMovies().forEach( m -> {
+                response.add(new MovieResponse( m ));
+            });
+        }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
