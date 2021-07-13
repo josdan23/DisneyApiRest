@@ -133,4 +133,32 @@ public class MovieController {
         service.deleteMovie(idMovie);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping("/movies/{id}")
+    public ResponseEntity<Object> updateMovie(
+            @PathVariable("id") Integer idMovie,
+            @RequestParam String data,
+            @RequestParam(required = false) MultipartFile imageFile) {
+
+        ObjectMapper mapper = new ObjectMapper();
+        
+        try {
+            Movie movieToSave = mapper.readValue(data, Movie.class);
+
+            if(imageFile != null && !imageFile.isEmpty() ) {
+
+                byte[] bytes = imageFile.getBytes();
+                Path path = Paths.get(PATH_IMAGES + imageFile.getOriginalFilename());
+                Files.write(path, bytes);
+                movieToSave.setImage(path.toString());
+            }
+
+            Movie movieUpdated = service.updateMovie(idMovie, movieToSave);
+            return new ResponseEntity<>(movieUpdated, HttpStatus.OK);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

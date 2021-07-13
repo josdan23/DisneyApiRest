@@ -86,28 +86,29 @@ public class MovieService {
 
     public Movie updateMovie(int idMovie, Movie updatedMovie) {
 
-        Genre savedGenre = genreRepository.findByName(updatedMovie.getGenre().getName());
-        if (savedGenre == null)
-            throw new RuntimeException("Genre not exist");
+        Movie movieStored = movieRepository.getById(idMovie);
 
-        if (Arrays.stream(TypeMovie.values()).noneMatch(typeMovie ->
-                typeMovie.toString().equals(updatedMovie.getType().toUpperCase())))
-            throw new RuntimeException("Type properties was not found");
-
-        Movie savedMovie = findMovieById(idMovie);
-        if(savedMovie == null)
-            throw new RuntimeException(String.format("Movie with id=%d no exist", idMovie));
+        if (updatedMovie.getTitle() != null)
+            movieStored.setTitle(updatedMovie.getTitle());
 
         if (updatedMovie.getImage() != null)
-            savedMovie.setImage(updatedMovie.getImage());
+            movieStored.setImage(updatedMovie.getImage());
 
-        savedMovie.setTitle(updatedMovie.getTitle());
-        savedMovie.setCreationDate(updatedMovie.getCreationDate());
-        savedMovie.setCalification(updatedMovie.getCalification());
-        savedMovie.setType(updatedMovie.getType().toUpperCase());
-        savedMovie.setGenre(updatedMovie.getGenre());
+        if (updatedMovie.getType() != null)
+            movieStored.setType(updatedMovie.getType());
 
-        return movieRepository.save(savedMovie);
+        if (updatedMovie.getCalification() > 0 && updatedMovie.getCalification() < 5)
+            movieStored.setCalification(updatedMovie.getCalification());
+
+        if (updatedMovie.getCreationDate() != null )
+            movieStored.setCreationDate(updatedMovie.getCreationDate());
+
+        if (updatedMovie.getGenre() != null ){
+            Genre genre = genreRepository.getById(updatedMovie.getGenre().getIdGenre());
+            movieStored.setGenre(genre);
+        }
+
+        return movieRepository.save(movieStored);
     }
 
     public void deleteMovie(int idMovie) {
