@@ -37,10 +37,13 @@ public class CharacterService {
 
     public Character saveCharacter(int idMovie, Character newCharacter) {
 
-        Movie savedMovie = movieRepository.getById(idMovie);
+        Optional<Movie> savedMovie = movieRepository.findById(idMovie);
+
+        if (!savedMovie.isPresent())
+            return null;
         Character savedCharacter =  repository.save(newCharacter);
 
-        CharacterMovie characterMovie = new CharacterMovie(savedMovie, savedCharacter);
+        CharacterMovie characterMovie = new CharacterMovie(savedMovie.get(), savedCharacter);
         characterMovieRepository.save(characterMovie);
         return savedCharacter;
     }

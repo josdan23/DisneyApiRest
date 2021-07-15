@@ -1,5 +1,7 @@
 package com.jdyapura.api.disney.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jdyapura.api.disney.controllers.responsedto.CharacterDetailResponse;
 import com.jdyapura.api.disney.controllers.responsedto.CharacterResponse;
 import com.jdyapura.api.disney.entities.Character;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +21,14 @@ import java.util.List;
 @RequestMapping
 public class CharacterController {
 
+
+    private final String PATH_IMAGES = "./src/main/resources/static/";
+
     @Autowired
     private CharacterService service;
 
     @GetMapping("/characters")
-    public ResponseEntity<List<CharacterResponse>> getAllCharacters(){
+    public ResponseEntity<?> getAllCharacters(){
 
         List<CharacterResponse> characterResponseList = new ArrayList<>();
 
@@ -43,27 +50,28 @@ public class CharacterController {
         Character character = service.findCharacterById(idCharacter);
         List<Movie> movieList = service.findMoviesToCharacterByIdCharacter(idCharacter);
 
-        CharacterDetailResponse response = new CharacterDetailResponse();
-        response.idCharacter = character.getIdCharacter();
-        response.name = character.getName();
-        response.age = character.getAge();
-        response.weight = character.getWeight();
-        response.history = character.getHistory();
-        response.image = character.getImage();
-
-        for (Movie movie : movieList) {
-            response.movies.add(movie.getTitle());
-        }
+        CharacterDetailResponse response = new CharacterDetailResponse(character, movieList);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/movies/{idMovie}/characters")
-    public ResponseEntity<Character> postCharacter(
+    public ResponseEntity<?> postCharacter(
             @PathVariable("idMovie") int idMovie,
-            @RequestBody Character character) {
+            @RequestParam String data,
+            @RequestParam(required = false) MultipartFile imagefile) {
 
-        return new ResponseEntity<>(service.saveCharacter(idMovie, character), HttpStatus.CREATED);
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            Character characterToSave = mapper.readValue(data, Character.class);
+
+            return new ResponseEntity<>(service.saveCharacter(idMovie, characterToSave ), HttpStatus.CREATED);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/characters/{id}")
