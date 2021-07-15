@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jdyapura.api.disney.entities.Genre;
 import com.jdyapura.api.disney.services.GenreService;
+import com.jdyapura.api.disney.util.ImageLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,16 +56,7 @@ public class GenreController {
 
             Genre newGenre = mapper.readValue(jsondata, Genre.class);
 
-            if (imageFile != null && !imageFile.isEmpty()) {
-
-                byte[] bytes = imageFile.getBytes();
-                Path path = Paths.get(PATH_IMAGES + imageFile.getOriginalFilename());
-                Files.write(path, bytes);
-                newGenre.setImage(path.toString());
-
-            } else {
-                newGenre.setImage("no image");
-            }
+            newGenre.setImage(ImageLoader.getStringPathOfImageUpload(imageFile));
 
             return new ResponseEntity<>(service.saveGenre(newGenre), HttpStatus.OK);
 

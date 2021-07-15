@@ -7,6 +7,7 @@ import com.jdyapura.api.disney.controllers.responsedto.CharacterResponse;
 import com.jdyapura.api.disney.entities.Character;
 import com.jdyapura.api.disney.entities.Movie;
 import com.jdyapura.api.disney.services.CharacterService;
+import com.jdyapura.api.disney.util.ImageLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,16 +64,18 @@ public class CharacterController {
     public ResponseEntity<?> postCharacter(
             @PathVariable("idMovie") int idMovie,
             @RequestParam String data,
-            @RequestParam(required = false) MultipartFile imagefile) {
+            @RequestParam(required = false) MultipartFile imageFile) {
 
         ObjectMapper mapper = new ObjectMapper();
 
         try {
             Character characterToSave = mapper.readValue(data, Character.class);
 
+            characterToSave.setImage(ImageLoader.getStringPathOfImageUpload(imageFile));
+
             return new ResponseEntity<>(service.saveCharacter(idMovie, characterToSave ), HttpStatus.CREATED);
 
-        } catch (JsonProcessingException e) {
+        }  catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
         }

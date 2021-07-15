@@ -9,6 +9,7 @@ import com.jdyapura.api.disney.entities.Genre;
 import com.jdyapura.api.disney.entities.Movie;
 import com.jdyapura.api.disney.services.GenreService;
 import com.jdyapura.api.disney.services.MovieService;
+import com.jdyapura.api.disney.util.ImageLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,29 +100,12 @@ public class MovieController {
             Genre genre = genreService.findGenreById(idGenre);
             movie.setGenre( genre );
 
-
-            if (imageFile != null && !imageFile.isEmpty()) {
-
-                byte[] bytes = imageFile.getBytes();
-                Path path = Paths.get(PATH_IMAGES + imageFile.getOriginalFilename());
-                Files.write(path, bytes);
-                movie.setImage(path.toString());
-
-            } else {
-                movie.setImage("no image");
-            }
+            movie.setImage(ImageLoader.getStringPathOfImageUpload(imageFile));
 
             Movie savedMovie = service.saveMovie(movie);
-            System.out.println(movie);
-            System.out.println(savedMovie);
 
             return new ResponseEntity<>(savedMovie, HttpStatus.CREATED);
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (RuntimeException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (IOException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
