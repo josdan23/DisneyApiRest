@@ -3,7 +3,7 @@ package com.jdyapura.api.disney.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "charecter_movie")
+@Table(name = "character_movie")
 public class CharacterMovie {
 
     @Id
@@ -16,7 +16,7 @@ public class CharacterMovie {
     private Movie movie;
 
     @ManyToOne
-    @JoinColumn(name = "charecter_id")
+    @JoinColumn(name = "character_id")
     private Character character;
 
     public CharacterMovie(){

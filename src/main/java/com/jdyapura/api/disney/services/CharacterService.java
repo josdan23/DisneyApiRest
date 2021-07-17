@@ -49,8 +49,8 @@ public class CharacterService {
     }
 
     public void deleteCharacter(int idCharater) {
-        if (!repository.existsById(idCharater))
-            return;
+
+        characterMovieRepository.deleteAllCharacterMovieWithIdCharacter(idCharater);
 
         repository.deleteById(idCharater);
     }
