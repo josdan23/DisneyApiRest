@@ -50,9 +50,12 @@ public class CharacterController {
     }
 
     @GetMapping("/characters/{id}")
-    public ResponseEntity<CharacterDetailResponse> getCharacter(@PathVariable("id") int idCharacter){
+    public ResponseEntity<?> getCharacter(@PathVariable("id") int idCharacter){
 
         Character character = service.findCharacterById(idCharacter);
+        if (character == null)
+            return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+
         List<Movie> movieList = service.findMoviesToCharacterByIdCharacter(idCharacter);
 
         CharacterDetailResponse response = new CharacterDetailResponse(character, movieList);
