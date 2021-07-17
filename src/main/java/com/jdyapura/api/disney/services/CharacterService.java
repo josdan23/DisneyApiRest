@@ -55,11 +55,26 @@ public class CharacterService {
         repository.deleteById(idCharater);
     }
 
-    public Character updateCharacter(int idCharacter, Character newCharacter) {
+    public Character updateCharacter(int idCharacter, Character charaterToUpdate) {
         Character savedCharacter = findCharacterById(idCharacter);
-        if( savedCharacter == null)
-            return null;
-        return repository.save(newCharacter);
+
+        if (charaterToUpdate.getName() != null)
+            savedCharacter.setName(charaterToUpdate.getName());
+
+        if (charaterToUpdate.getAge() > 0 && charaterToUpdate.getAge() != savedCharacter.getAge())
+            savedCharacter.setAge(charaterToUpdate.getAge());
+
+        if (charaterToUpdate.getWeight() > 0 && charaterToUpdate.getAge() != savedCharacter.getWeight())
+            savedCharacter.setWeight(charaterToUpdate.getWeight());
+
+        if (charaterToUpdate.getHistory() != null)
+            savedCharacter.setHistory(charaterToUpdate.getHistory());
+
+        if (charaterToUpdate.getImage() != null)
+            savedCharacter.setImage(charaterToUpdate.getImage());
+
+        return repository.save(savedCharacter);
+
     }
 
     public List<Movie> findMoviesToCharacterByIdCharacter(int idCharacter) {

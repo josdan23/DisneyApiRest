@@ -82,10 +82,27 @@ public class CharacterController {
     }
 
     @PutMapping("/characters/{id}")
-    public ResponseEntity<Character> updateCharacter(
-            @PathVariable int idCharacter,
-            @RequestBody Character updatedCharacter) {
-        return new ResponseEntity<>(service.updateCharacter(idCharacter, updatedCharacter), HttpStatus.OK);
+    public ResponseEntity<?> updateCharacter(
+            @PathVariable("id") int idCharacter,
+            @RequestParam String data,
+            @RequestParam(required = false) MultipartFile imageFile) {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            Character characterToUpdate = mapper.readValue(data, Character.class);
+
+            characterToUpdate.setImage(ImageLoader.getStringPathOfImageUpload(imageFile));
+
+            return new ResponseEntity<>(service.updateCharacter(idCharacter, characterToUpdate), HttpStatus.OK);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+
     }
 
     @DeleteMapping("/characters/{id}")
